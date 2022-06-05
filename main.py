@@ -94,43 +94,46 @@ while not gameIsDone:
       gameIsDone = True
 
   key = pygame.key.get_pressed()
-  '''
-  The top-left corner is (0,0), so to move up, the y coordinates must decrement
-  '''
+
+  # The top-left corner is (0,0), so to move up, the y coordinates must decrement
+
   if key[pygame.K_w]: # Paddle1 UP
-    paddle1.rect.y -= paddleSpeed
+    if paddle1.rect.y > 10:
+      paddle1.rect.y -= paddleSpeed
   if key[pygame.K_s]: # Paddle1 DOWN
-    paddle1.rect.y += paddleSpeed
+    if paddle1.rect.y < 400:
+      paddle1.rect.y += paddleSpeed
   if key[pygame.K_UP]: # Paddle2 UP
-    paddle2.rect.y -= paddleSpeed
+    if paddle2.rect.y > 10:
+      paddle2.rect.y -= paddleSpeed
   if key[pygame.K_DOWN]: # Paddle2 DOWN
-    paddle2.rect.y += paddleSpeed
+    if paddle2.rect.y < 400:
+      paddle2.rect.y += paddleSpeed
 
   pong.rect.x += pong.speed * pong.dx # Speed * direction
   pong.rect.y += pong.speed * pong.dy
 
-  # Ball bounces off the top/bottom
-  if pong.rect.y > 490:
-    pong.dy *= -1
-  if pong.rect.y < 10:
+  # Ball bounces off the top or bottom
+  if pong.rect.y > 490 or pong.rect.y < 10:
     pong.dy *= -1
   
-  # Ball bounces off a SIDE
-  if pong.rect.x > 740: # Paddle2 missed
+  # Ball hits right side
+  if pong.rect.x > 740: # Player 1 scored
     pong.rect.x, pong.rect.y = 375, 250 # Reset to centre of screen
     pong.dx *= -1
     paddle1.points += 1
-  if pong.rect.x < 10: # Paddle1 missed
+
+  # Ball hits left side
+  if pong.rect.x < 10: # Player 2 scored
     pong.rect.x, pong.rect.y = 375, 250 # Reset to centre of screen
     pong.dx *= -1 
     paddle2.points += 1
 
   # Ball bounces off the paddles
-  if paddle1.rect.colliderect(pong.rect):
-    pong.dx *= -1
-  if paddle2.rect.colliderect(pong.rect):
+  if paddle1.rect.colliderect(pong.rect) or paddle2.rect.colliderect(pong.rect):
     pong.dx *= -1
 
   redraw()
       
 pygame.quit()
+
