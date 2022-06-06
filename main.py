@@ -1,6 +1,6 @@
 '''
 Name: Rayyan Aamir
-Date: June 5, 2022
+Date: June 6, 2022
 Program: Pong
 '''
 
@@ -17,8 +17,7 @@ pygame.display.set_caption('Pong') # Window title
 
 # Set some colour variables
 white = (255, 255, 255)
-black = (0, 0, 0)
-red = (255, 0, 0)
+r, g, b = 0, 0, 0
 
 # Paddle Class
 class Paddle(pygame.sprite.Sprite): # Import pygame.sprite features
@@ -61,7 +60,10 @@ allSprites = pygame.sprite.Group()
 allSprites.add(paddle1, paddle2, pong)
 
 def redraw():
-  window.fill(black)
+  # Background
+  background = (r, g, b)
+  window.fill(background)
+
   # Title
   font = pygame.font.SysFont('Comic Sans MS', 30)
   title = font.render('PONG', False, white)
@@ -83,10 +85,6 @@ def redraw():
   window.blit(title, titleRect)
   allSprites.draw(window)
   pygame.display.update()
-
-  # DOESN'T WORK
-  if pong.speed >= 1.1: # Screen turns red at this point
-    window.fill(red)
 
 
 gameIsDone = False
@@ -122,23 +120,26 @@ while not gameIsDone:
   # Ball bounces off the top or bottom
   if pong.rect.y > 490 or pong.rect.y < 10:
     pong.dy *= -1
-    pong.speed += 0.1 # Speed increases every time the ball bounces off a wall
-  
+
   # Ball hits right side
   if pong.rect.x > 740: # Player 1 scored
     pong.rect.x, pong.rect.y = 375, 250 # Reset to centre of screen
     pong.dx *= -1 # Change direction by inverting
     paddle1.points += 1
+    r = 0 # Reset background colour
 
   # Ball hits left side
   if pong.rect.x < 10: # Player 2 scored
     pong.rect.x, pong.rect.y = 375, 250 # Reset to centre of screen
     pong.dx *= -1 # Change direction by inverting
     paddle2.points += 1
+    r = 0 # Reset background color
 
   # Ball bounces off the paddles
   if paddle1.rect.colliderect(pong.rect) or paddle2.rect.colliderect(pong.rect):
     pong.dx *= -1
+    pong.speed += 0.5 # Speed increases every time the ball bounces off a wall
+    r += 5 # Background colour tints read
 
   redraw()
       
