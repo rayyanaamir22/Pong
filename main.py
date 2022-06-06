@@ -18,6 +18,7 @@ pygame.display.set_caption('Pong') # Window title
 # Set some colour variables
 white = (255, 255, 255)
 black = (0, 0, 0)
+red = (255, 0, 0)
 
 # Paddle Class
 class Paddle(pygame.sprite.Sprite): # Import pygame.sprite features
@@ -82,6 +83,11 @@ def redraw():
   window.blit(title, titleRect)
   allSprites.draw(window)
   pygame.display.update()
+
+  # DOESN'T WORK
+  if pong.speed >= 1.1: # Screen turns red at this point
+    window.fill(red)
+
 
 gameIsDone = False
 
