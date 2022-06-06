@@ -86,7 +86,7 @@ def redraw():
 gameIsDone = False
 
 while not gameIsDone:
-  pygame.time.delay(100) # In milliseconds
+  pygame.time.delay(50) # In milliseconds
 
   # For key press, mouse click, etc
   for event in pygame.event.get():
@@ -116,17 +116,18 @@ while not gameIsDone:
   # Ball bounces off the top or bottom
   if pong.rect.y > 490 or pong.rect.y < 10:
     pong.dy *= -1
+    pong.speed += 0.1 # Speed increases every time the ball bounces off a wall
   
   # Ball hits right side
   if pong.rect.x > 740: # Player 1 scored
     pong.rect.x, pong.rect.y = 375, 250 # Reset to centre of screen
-    pong.dx *= -1
+    pong.dx *= -1 # Change direction by inverting
     paddle1.points += 1
 
   # Ball hits left side
   if pong.rect.x < 10: # Player 2 scored
     pong.rect.x, pong.rect.y = 375, 250 # Reset to centre of screen
-    pong.dx *= -1 
+    pong.dx *= -1 # Change direction by inverting
     paddle2.points += 1
 
   # Ball bounces off the paddles
@@ -136,4 +137,3 @@ while not gameIsDone:
   redraw()
       
 pygame.quit()
-
